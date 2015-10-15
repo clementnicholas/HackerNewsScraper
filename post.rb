@@ -37,30 +37,28 @@ class Post
   end
 
   def get_item_id
-    url = ARGV[0]
-    item_id = url.split('/').last
-    id_number = url.split('=').last
+    item_id = @url.split('/').last
+    id_number = @url.split('=').last
   end
 
-  def get_authors()
-    arr = @page.search('.comhead > a:first-child').map do |element|
+  def get_authors
+    array_of_authors = @page.search('.comhead > a:first-child').map do |element|
       element.inner_text
     end
-    array_of_authors = arr[1..-1]
+    array_of_authors[1..-1]
   end
 
-  def get_comments()
-    array_of_comments = @page.search('.comment > span:first-child').map do |text|
+  def get_texts
+    @page.search('.comment > span:first-child').map do |text|
       text.inner_text.gsub(/\n.*/, '')
     end
   end
 
   def generate_comments
     authors_array = get_authors
-    comments_array = get_comments
-
+    text_array = get_texts
     authors_array.each_with_index do |author, index| 
-      comment = Comment.new(author, comments_array[index])
+      comment = Comment.new(author.upcase.blue, text_array[index].white)
       displayed_comment = comment.display
       add_comment(displayed_comment)
     end

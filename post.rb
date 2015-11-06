@@ -12,16 +12,10 @@ class Post
     @page = Nokogiri::HTML(open(url))
     @title = get_title
     @points = get_points
-    @url = get_url
+    @url = url
     @item_id = get_item_id
     @comments = []
     generate_comments
-  end
-
-
-
-  def get_url
-   ARGV[0]
   end
 
   def get_points
@@ -58,9 +52,8 @@ class Post
     authors_array = get_authors
     text_array = get_texts
     authors_array.each_with_index do |author, index| 
-      comment = Comment.new(author.upcase.blue, text_array[index].white)
-      displayed_comment = comment.display
-      add_comment(displayed_comment)
+      comment = Comment.new(author, text_array[index])
+      add_comment(comment)
     end
   end
 

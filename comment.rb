@@ -8,6 +8,8 @@ class Comment
   end
 
   def display
-    "#{@author}: #{@text}"
+    author = @author
+    text = @text
+    "#{author.upcase.blue}: #{text}"
   end
 end
